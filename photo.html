@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="photo.css">
+</head>
+
+<body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+        function App() {
+            const [bids, setBids] = React.useState([]);
+
+            React.useEffect(() => {
+                fetch('http://localhost:5000/')
+                    .then(response => response.json())
+                    .then(data => {
+                        setBids(data);
+                    });
+            }, []);
+
+            const handleSubmit = (event, artRecordId) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const name = formData.get('name');
+    const bidAmount = Number(formData.get('bid'));
+    const newBid = { user: name, bid: bidAmount };
+
+    const highestBid = bids.find(bid => bid._id === artRecordId);
+    const highestBidValue = highestBid ? highestBid.bids.reduce((max, current) => (current.bid > max ? current.bid : max), 0) : 0;
+
+    if (bidAmount <= highestBidValue) {
+        alert('Bid must be higher than the current highest bid.');
+        event.target.reset();
+        return;
+    }
+
+    fetch(`http://localhost:5000/${artRecordId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newBid),
+    })
+        .then(response => response.json())
+        .then(data => {
+            setBids(prevBids => {
+                const updatedBids = prevBids.map(bid => {
+                    if (bid._id === artRecordId) {
+                        return { ...bid, bids: [...bid.bids, newBid] }; 
+                    }
+                    return bid;
+                });
+                return updatedBids;
+            });
+        })
+        .catch(error => console.error('Error adding bid:', error));
+
+    event.target.reset();
+};
+
+
+
+            return (
+                <div className="App">
+                    <div className="photo-gallery">
+                        {bids.map((bid, index) => (
+                            <div key={index} className="photo-container">
+                                <div className="photo">
+                                    <img src={bid.src} alt="" width="200" />
+                                </div>
+                                <div className="comments-section">
+                                    <h4>Bids</h4>
+                                    <ul>
+                                        {bid.bids.map((item, index) => (
+    <li key={index}><strong>{item.user}:</strong> ${item.bid}</li>
+))}
+
+
+                                    </ul>
+                                </div>
+                                <div className="addbid">
+                                    <form className="comment-form" onSubmit={(event) => handleSubmit(event, bid._id)}>
+
+                                        <input type="text" name="name" placeholder="Your name" required />
+                                        <input type="number" name="bid" placeholder="Add a higher bid" required />
+                                        <button type="submit">Submit Your Higher Bid</button>
+                                    </form>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+
+</html>

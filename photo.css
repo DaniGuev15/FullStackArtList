@@ -1,0 +1,114 @@
+#root {
+    width: 60%;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.App {
+    border: #61dafbaa solid;
+}
+
+/* .comments-section {
+    margin-left: 20px;
+    flex: 1;
+} */
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.comment-form textarea {
+    /* width: fit-content; */
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+ul::-webkit-scrollbar {
+    width: 10px;
+}
+
+ul::-webkit-scrollbar-thumb {
+    background-color: #646cff;
+    border-radius: 10px;
+}
+
+ul::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+ul {
+    border: 2px solid;
+    padding: 5px;
+    overflow: auto;
+    height: 200px;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+
+.photo-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.photo-container>* {
+    flex-grow: 1;
+    flex-basis: 200px;
+    border: #61dafbaa solid 1px;
+}
+
+.photo {
+    height: 100%;
+}
+
+.photo img {
+    width: 100%;
+    height: 100%;
+}
+
+.comments-section {
+    margin-left: 5px;
+    /* border: #61dafbaa dashed 4px; */
+    display: flex;
+    flex-direction: column;
+}
+
+.addbid {
+    flex-direction: column;
+    /* width: 30%; */
+    margin: 5px;
+}
+
+.App>h1 {
+    font-size: 2.5em;
+}
+
+h4 {
+    font-size: 1em;
+    margin: 0;
+}
+
+form>button {
+    background: #008CBA;
+    color: white;
+}
+
+input {
+    margin: 5px 0px;
+    position: relative;
+}
+
+.add {
+    text-align: left;
+    background: #008CBA;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
